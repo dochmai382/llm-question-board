@@ -1,0 +1,15 @@
+spring:
+  datasource: # 여러 DBaaS에서 가져오기
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # 시큐리티
+#  security:
+#    user:
+#      name: ${SECURITY_NAME}
+#      password: ${SECURITY_PASSWORD}
+# 로깅 설정
+logging:
+  level:
+    org.example.llmquestionboard.model.mapper: ERROR # mapper 패키지의 로깅 레벨을 ERROR 설정
