@@ -6,9 +6,12 @@ public record Users(
         String password,
         String nickname, // 별명
         String role,
-        Boolean enabled
+        Boolean enabled,
+        int points,
+        int reportCount,
+        boolean isBanned
 ) {
     public static Users joinUsers(String username, String password, String nickname) {
-        return new Users(0L, username, password, nickname, "USER", true);
+        return new Users(0L, username, password, nickname, "USER", true, 0, 0, false);
     }
 }
