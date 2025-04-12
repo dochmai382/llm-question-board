@@ -7,29 +7,145 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <h2 class="mb-4 text-center">회원가입</h2>
-            <form th:action="@{/signup}" method="post">
+            <form th:action="@{/signup}" method="post" th:object="${signupDTO}" onsubmit="return validatePasswords()">
                 <div class="mb-3">
                     <label for="username" class="form-label">아이디</label>
-                    <input type="text" class="form-control" id="username" name="username" required />
+                    <input type="text" class="form-control" id="username" th:field="*{username}" required />
+                    <p id="username-check"></p>
+<!--                    <span th:errors="*{username}"></span>-->
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red" id="usernameError"></p>
                 </div>
                 <div class="mb-3">
                     <label for="nickname" class="form-label">닉네임</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" required />
+                    <input type="text" class="form-control" id="nickname" th:field="*{nickname}" required />
+                    <p id="nickname-check"></p>
+                    <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" style="color: red" id="nicknameError"></p>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" required />
+                    <input type="password" class="form-control" id="password" th:field="*{password}" required />
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red" id="passwordError"></p>
+
                 </div>
-<!--                <div class="mb-3">-->
-<!--                    <label for="confirmPassword" class="form-label">비밀번호 확인</label>-->
-<!--                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required />-->
-<!--                </div>-->
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" required />
+                    <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" id="confirmPasswordError"></p>
+                    <div id="confirmError" style="color:red;"></div>
+                </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-success">회원가입</button>
+                    <button type="submit" class="btn btn-success" id="signupBtn" disabled>회원가입</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function hideErrorOnInput(inputId, errorId) {
+        const input = document.getElementById(inputId);
+        const error = document.getElementById(errorId);
+
+        if (input && error) {
+            input.addEventListener("input", () => error.style.display = "none");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        hideErrorOnInput("username", "usernameError");
+        hideErrorOnInput("nickname", "nicknameError");
+        hideErrorOnInput("password", "passwordError");
+        hideErrorOnInput("confirmPassword", "confirmPasswordError");
+        // 필요한 만큼 추가
+    });
+
+
+    let isUsernameAvailable = false;
+    let isNicknameAvailable = false;
+
+    function toggleSubmitButton() {
+        const submitBtn = document.getElementById('signupBtn');
+        if (isUsernameAvailable && isNicknameAvailable) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    // AJAX - 아이디 중복 검사
+    document.getElementById('username').addEventListener('blur', function () {
+        const username = this.value;
+        fetch(`/check-username?username=${encodeURIComponent(username)}`)
+            .then(response => response.json())
+            .then(isTaken => {
+                const result = document.getElementById('username-check');
+                if (isTaken) {
+                    result.textContent = '이미 사용 중인 이름입니다.';
+                    result.style.color = 'red';
+                    isUsernameAvailable = false;
+                } else {
+                    result.textContent = '사용 가능한 이름입니다.';
+                    result.style.color = 'green';
+                    isUsernameAvailable = true;
+                }
+                toggleSubmitButton();
+            });
+    });
+
+    // AJAX - 닉네임 중복 검사
+    document.getElementById('nickname').addEventListener('blur', function () {
+        const nickname = this.value;
+        fetch(`/check-nickname?nickname=${encodeURIComponent(nickname)}`)
+            .then(response => response.json())
+            .then(isTaken => {
+                const result = document.getElementById('nickname-check');
+                if (isTaken) {
+                    result.textContent = '이미 사용 중인 닉네임입니다.';
+                    result.style.color = 'red';
+                    isNicknameAvailable = false;
+                } else {
+                    result.textContent = '사용 가능한 닉네임입니다.';
+                    result.style.color = 'green';
+                    isNicknameAvailable = true;
+                }
+                toggleSubmitButton();
+            });
+    });
+
+    // 사용자가 값 바꾸면 초기화
+    document.getElementById('username').addEventListener('input', () => {
+        isUsernameAvailable = false;
+        toggleSubmitButton();
+    });
+    document.getElementById('nickname').addEventListener('input', () => {
+        isNicknameAvailable = false;
+        toggleSubmitButton();
+    });
+
+
+    function validatePasswords() {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        const errorDiv = document.getElementById('confirmError');
+
+        if (!isUsernameAvailable) {
+            alert("아이디 중복 확인이 필요합니다.");
+            return false;
+        }
+
+        if (!isNicknameAvailable) {
+            alert("닉네임 중복 확인이 필요합니다.");
+            return false;
+        }
+
+        if (password !== confirm) {
+            errorDiv.textContent = '비밀번호가 일치하지 않습니다.';
+            return false;
+        }
+
+        errorDiv.textContent = '';
+        return true;
+    }
+</script>
 </body>
 </html>
