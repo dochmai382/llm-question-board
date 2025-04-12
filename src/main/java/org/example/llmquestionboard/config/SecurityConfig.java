@@ -31,7 +31,10 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID") // 쿠키 삭제
                         .permitAll()
                 )
-                .userDetailsService(customUserDetailService);
+                .userDetailsService(customUserDetailService)
+                .sessionManagement(session -> session
+                        .sessionFixation().newSession())
+        ;
         return http.build();
     }
 
