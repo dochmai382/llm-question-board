@@ -63,13 +63,11 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("errorMessage", "아이디나 비밀번호가 잘못되었습니다.");
+        }
         return "auth/login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-
-        return "redirect;/";
-    }
 }

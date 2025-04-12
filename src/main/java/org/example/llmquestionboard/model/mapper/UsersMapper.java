@@ -16,4 +16,7 @@ public interface UsersMapper {
 
     @Select("SELECT COUNT(*) FROM users WHERE nickname = #{nickname}")
     int countByNickname(String nickname);
+
+    @Select("SELECT * FROM users WHERE username = #{username}")
+    Users findByUsername(String username);
 }
