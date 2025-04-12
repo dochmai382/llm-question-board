@@ -8,7 +8,7 @@ import org.example.llmquestionboard.model.domain.Users;
 @Mapper
 public interface UsersMapper {
 
-    @Insert("INSERT INTO users (username, password, nickname) VALUES (#{username}, #{password}, #{nickname})")
+    @Insert("INSERT INTO users (user_id, username, password, nickname) VALUES (#{userId}, #{username}, #{password}, #{nickname})")
     void insertUser(Users users);
 
     @Select("SELECT COUNT(*) FROM users WHERE username = #{username}")

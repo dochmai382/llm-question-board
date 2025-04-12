@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid SignupDTO signupDTO, BindingResult bindingResult) {
+    public String signup(@Valid SignupDTO signupDTO, BindingResult bindingResult, Model model) {
 //        authService.signup(username, nickname, password);
 
         if (authService.isDuplicateUsername(signupDTO.username())) {
@@ -44,8 +44,13 @@ public class AuthController {
             return "auth/signup";
         }
 
-        authService.signup(signupDTO);
-        return "redirect:/login";
+        try {
+            authService.signup(signupDTO);
+            return "redirect:/login"; // 가입 성공 시 로그인 페이지로 리디렉션
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage()); // 실패한 경우 에러 메시지 전달
+            return "auth/signup"; // 가입 페이지로 다시 리디렉션
+        }
     }
 
     // 유저네임 중복 AJAX 체크

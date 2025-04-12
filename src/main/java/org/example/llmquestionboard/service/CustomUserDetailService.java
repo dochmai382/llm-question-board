@@ -28,7 +28,8 @@ public class CustomUserDetailService implements UserDetailsService {
         return new CustomUserDetails(
                 user.username(), user.password(),
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_%s".formatted(user.role()))),
-                user.nickname()
+                user.nickname(),
+                user.userId()
         );
     }
 }
