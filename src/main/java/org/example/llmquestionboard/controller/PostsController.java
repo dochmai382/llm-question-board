@@ -1,5 +1,6 @@
 package org.example.llmquestionboard.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.llmquestionboard.model.security.CustomUserDetails;
 import org.example.llmquestionboard.service.QuestionsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,13 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/questions")
+@RequestMapping("/question")
+@RequiredArgsConstructor
 public class PostsController {
 
     private final QuestionsService questionsService;
 
-    public PostsController(QuestionsService questionsService) {
-        this.questionsService = questionsService;
+    @GetMapping
+    public String list(Model model) {
+        model.addAttribute("questionList", questionsService.getQuestions());
+        return "question/questionList";
     }
 
     @GetMapping("/new")
