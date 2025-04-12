@@ -4,8 +4,24 @@
             <a class="navbar-brand" href="/">AI 질문 게시판</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
+                    <!-- 로그인된 상태에서만 로그인 이름과 로그아웃 표시 -->
+                    <li class="nav-item" th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+                        <a class="nav-link" href="#">안녕하세요! <span th:text="${#authentication.principal.nickname}"></span> 님</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+<!--                        <a class="nav-link" href="/logout">로그아웃</a>-->
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-link">로그아웃</button>
+                        </form>
+                    </li>
+
+                    <!-- 로그인되지 않은 상태에서만 로그인, 회원가입 표시 -->
+                    <li class="nav-item" th:if="${#authentication == null or #authentication.name == 'anonymousUser'}">
+                        <a class="nav-link" href="/login">로그인</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authentication == null or #authentication.name == 'anonymousUser'}">
+                        <a class="nav-link" href="/signup">회원가입</a>
+                    </li>
                 </ul>
             </div>
         </div>
