@@ -33,6 +33,11 @@
                     <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" id="confirmPasswordError"></p>
                     <div id="confirmError" style="color:red;"></div>
                 </div>
+
+                <!-- 에러 메시지 출력 -->
+                <div th:if="${errorMessage}" class="alert alert-danger">
+                    <p th:text="${errorMessage}"></p>
+                </div>
                 <div class="d-grid">
                     <button type="submit" class="btn btn-success" id="signupBtn" disabled>회원가입</button>
                 </div>

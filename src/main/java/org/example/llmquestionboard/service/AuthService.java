@@ -6,6 +6,7 @@ import org.example.llmquestionboard.model.dto.SignupDTO;
 import org.example.llmquestionboard.model.mapper.UsersMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +21,15 @@ public class AuthService {
 //        usersMapper.insertUser(joinUser);
 //    }
 
+    @Transactional
     public void signup(SignupDTO signupDTO) {
         String encodedPassword = passwordEncoder.encode(signupDTO.password());
         Users joinUser = Users.joinUsers(signupDTO.username(), encodedPassword, signupDTO.nickname());
-        usersMapper.insertUser(joinUser);
+        try {
+            usersMapper.insertUser(joinUser);
+        } catch (Exception e) {
+            throw new RuntimeException("가입 실패: 데이터베이스 오류");
+        }
     }
 
     public boolean isDuplicateUsername(String username) {
