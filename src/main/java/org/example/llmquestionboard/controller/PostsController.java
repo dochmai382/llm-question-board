@@ -6,10 +6,7 @@ import org.example.llmquestionboard.service.QuestionsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/question")
@@ -44,6 +41,12 @@ public class PostsController {
             model.addAttribute("errorMessage", e.getMessage());
             return "question/questionForm"; //
         }
+    }
+
+    @GetMapping("/{questionId}")
+    public String detail(@PathVariable String questionId, Model model) {
+        model.addAttribute("question", questionsService.getQuestion(questionId));
+        return "question/questionDetail";
     }
 
 }

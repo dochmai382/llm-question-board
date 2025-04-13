@@ -18,8 +18,23 @@ public interface QuestionsMapper {
                 JOIN users u ON q.user_id = u.user_id
                 ORDER BY q.created_at DESC
             """)
-    @Results(
+    @Results({
+            @Result(property = "questionId", column = "question_id"),
             @Result(property = "createdAt", column = "created_at")
-    )
+    })
     List<QuestionDTO> findAllWithNickname();
+
+    @Select("""
+                SELECT q.user_id, q.question_id, q.title, q.content, q.created_at, q.updated_at, u.nickname
+                FROM questions q
+                JOIN users u ON q.user_id = u.user_id
+                WHERE q.question_id = #{questionId}
+            """)
+    @Results({
+            @Result(property = "questionId", column = "question_id"),
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "updatedAt", column = "updated_at")
+    })
+    QuestionDTO findByQuestionId(String questionId);
 }

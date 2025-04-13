@@ -19,7 +19,7 @@
             <tr th:each="question, iStat : ${questionList}">
                 <td th:text="${iStat.count}"></td>
                 <td>
-                    <a th:href="@{'/questions/' + ${question.questionId}}" th:text="${question.title}"></a>
+                    <a th:href="@{'/question/' + ${question.questionId}}" th:text="${question.title}"></a>
                 </td>
                 <td th:text="${question.nickname}"></td>
                 <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}"></td>

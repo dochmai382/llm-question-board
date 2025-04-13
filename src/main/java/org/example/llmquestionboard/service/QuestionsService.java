@@ -33,4 +33,11 @@ public class QuestionsService {
             return q;
         }).toList();
     }
+
+    public QuestionDTO getQuestion(String questionId) {
+        QuestionDTO dto = questionsMapper.findByQuestionId(questionId);
+        dto.setCreatedAt(dto.getCreatedAt().plusHours(9));
+        dto.setUpdatedAt(dto.getUpdatedAt().plusHours(9));
+        return dto;
+    }
 }
