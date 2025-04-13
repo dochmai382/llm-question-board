@@ -16,10 +16,11 @@ public class QuestionsService {
         this.questionsMapper = questionsMapper;
     }
 
-    public void insertQuestion(String userId, String title, String content) {
+    public String insertQuestion(String userId, String title, String content) {
         Questions questions = Questions.createQuestions(userId, title, content);
         try {
             questionsMapper.save(questions);
+            return questions.questionId();
         } catch (Exception e) {
             throw new RuntimeException("등록 실패: 데이터베이스 오류");
         }

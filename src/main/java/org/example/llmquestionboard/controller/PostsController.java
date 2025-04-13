@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @Controller
 @RequestMapping("/question")
 @RequiredArgsConstructor
@@ -37,9 +35,8 @@ public class PostsController {
 
         String userId = customUserDetails.getUserId();
         try {
-            questionsService.insertQuestion(userId, title, content);
-//        return "redirect:/questions";
-            return "redirect:/";
+            String questionId = questionsService.insertQuestion(userId, title, content);
+            return "redirect:/question/" + questionId;
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "question/questionForm"; //
