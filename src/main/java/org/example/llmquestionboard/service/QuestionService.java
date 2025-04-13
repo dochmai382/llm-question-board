@@ -2,17 +2,17 @@ package org.example.llmquestionboard.service;
 
 import org.example.llmquestionboard.model.domain.Questions;
 import org.example.llmquestionboard.model.dto.QuestionDTO;
-import org.example.llmquestionboard.model.mapper.QuestionsMapper;
+import org.example.llmquestionboard.model.mapper.QuestionMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class QuestionsService {
+public class QuestionService {
 
-    private final QuestionsMapper questionsMapper;
+    private final QuestionMapper questionsMapper;
 
-    public QuestionsService(QuestionsMapper questionsMapper) {
+    public QuestionService(QuestionMapper questionsMapper) {
         this.questionsMapper = questionsMapper;
     }
 

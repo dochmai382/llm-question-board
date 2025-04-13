@@ -3,7 +3,7 @@ package org.example.llmquestionboard.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.llmquestionboard.model.dto.QuestionDTO;
 import org.example.llmquestionboard.model.security.CustomUserDetails;
-import org.example.llmquestionboard.service.QuestionsService;
+import org.example.llmquestionboard.service.QuestionService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/question")
 @RequiredArgsConstructor
-public class PostsController {
+public class QuestionController {
 
-    private final QuestionsService questionsService;
+    private final QuestionService questionsService;
 
     @GetMapping
     public String list(Model model) {

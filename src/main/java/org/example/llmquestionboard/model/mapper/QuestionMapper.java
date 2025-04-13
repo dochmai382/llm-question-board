@@ -7,7 +7,7 @@ import org.example.llmquestionboard.model.dto.QuestionDTO;
 import java.util.List;
 
 @Mapper
-public interface QuestionsMapper {
+public interface QuestionMapper {
 
     @Insert("INSERT INTO questions (question_id, user_id, title, content) VALUES (#{questionId}, #{userId}, #{title}, #{content})")
     void save(Questions questions);
