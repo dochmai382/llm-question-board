@@ -1,13 +1,11 @@
 package org.example.llmquestionboard.service;
 
-import java.time.LocalDateTime;
 import org.example.llmquestionboard.model.domain.Questions;
 import org.example.llmquestionboard.model.dto.QuestionDTO;
 import org.example.llmquestionboard.model.mapper.QuestionsMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class QuestionsService {
@@ -43,5 +41,9 @@ public class QuestionsService {
 
     public void deleteQuestion(String questionId) {
         questionsMapper.softDelete(questionId);
+    }
+
+    public void updateQuestion(String questionId, String title, String content) {
+        questionsMapper.update(questionId, title, content);
     }
 }

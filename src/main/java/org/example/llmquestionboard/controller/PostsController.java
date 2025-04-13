@@ -1,12 +1,15 @@
 package org.example.llmquestionboard.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.llmquestionboard.model.dto.QuestionDTO;
 import org.example.llmquestionboard.model.security.CustomUserDetails;
 import org.example.llmquestionboard.service.QuestionsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/question")
@@ -50,8 +53,30 @@ public class PostsController {
     }
 
     @PostMapping("/delete/{questionId}")
-    public String delete(@PathVariable String questionId) {
+    public String delete(@PathVariable String questionId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        QuestionDTO question = questionsService.getQuestion(questionId);
+        if (question == null || !question.getUserId().equals(userDetails.getUserId())) {
+            return "redirect:/question";
+        }
         questionsService.deleteQuestion(questionId);
         return "redirect:/question";
+    }
+
+    @GetMapping("/edit/{questionId}")
+    public String edit(@PathVariable String questionId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        QuestionDTO question = questionsService.getQuestion(questionId);
+        if (!question.getUserId().equals(userDetails.getUserId())) {
+            return "redirect:/question";
+        }
+
+        model.addAttribute("question", question);
+        return "question/questionEdit";
+    }
+
+    @PostMapping("/edit/{questionId}")
+    public String edit(@PathVariable String questionId,
+                       @RequestParam String title, @RequestParam String content) {
+        questionsService.updateQuestion(questionId, title, content);
+        return "redirect:/question/" + questionId;
     }
 }

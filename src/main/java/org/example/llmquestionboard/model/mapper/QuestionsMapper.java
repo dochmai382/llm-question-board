@@ -42,4 +42,6 @@ public interface QuestionsMapper {
     @Update("UPDATE questions SET is_deleted = TRUE WHERE question_id = #{questionId}")
     void softDelete(String questionId);
 
+    @Update("UPDATE questions SET title = #{title}, content = #{content} WHERE question_id = #{questionId}")
+    void update(String questionId, String title, String content);
 }
