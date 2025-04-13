@@ -49,4 +49,9 @@ public class PostsController {
         return "question/questionDetail";
     }
 
+    @PostMapping("/delete/{questionId}")
+    public String delete(@PathVariable String questionId) {
+        questionsService.deleteQuestion(questionId);
+        return "redirect:/question";
+    }
 }

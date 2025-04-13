@@ -16,16 +16,18 @@
         <hr>
         <div th:utext="${question.content}">질문 내용</div>
 
-        <!--        &lt;!&ndash; 작성자 본인일 경우 수정/삭제 버튼 표시 &ndash;&gt;-->
-        <!--        <div th:if="${#authentication.principal.userId == question.userId}">-->
-        <!--            <a th:href="@{|/questions/edit/${question.questionId}|}" class="btn btn-primary">수정</a>-->
-        <!--            <form th:action="@{|/questions/delete/${question.questionId}|}" method="post" style="display:inline;">-->
-        <!--                <button type="submit" class="btn btn-danger">삭제</button>-->
-        <!--            </form>-->
-        <!--        </div>-->
-        <div class="mt-4">
+        <div class="mt-4 d-flex justify-content-end gap-2">
+            <!-- 작성자 본인일 경우 수정/삭제 버튼 표시 -->
+            <div th:if="${#authentication.principal.userId == question.userId}" class="d-flex gap-2">
+                <a th:href="@{|/question/edit/${question.questionId}|}" class="btn btn-primary">수정</a>
+                <form th:action="@{|/question/delete/${question.questionId}|}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+
             <a th:href="@{/question}" class="btn btn-secondary">목록으로</a>
         </div>
+
 
         <hr/>
 

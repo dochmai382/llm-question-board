@@ -40,4 +40,8 @@ public class QuestionsService {
         dto.setUpdatedAt(dto.getUpdatedAt().plusHours(9));
         return dto;
     }
+
+    public void deleteQuestion(String questionId) {
+        questionsMapper.softDelete(questionId);
+    }
 }

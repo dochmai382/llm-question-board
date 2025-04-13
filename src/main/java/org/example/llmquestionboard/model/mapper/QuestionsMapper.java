@@ -16,6 +16,7 @@ public interface QuestionsMapper {
                 SELECT q.question_id, q.title, q.content, q.created_at, u.nickname
                 FROM questions q
                 JOIN users u ON q.user_id = u.user_id
+                WHERE q.is_deleted = FALSE
                 ORDER BY q.created_at DESC
             """)
     @Results({
@@ -37,4 +38,8 @@ public interface QuestionsMapper {
             @Result(property = "updatedAt", column = "updated_at")
     })
     QuestionDTO findByQuestionId(String questionId);
+
+    @Update("UPDATE questions SET is_deleted = TRUE WHERE question_id = #{questionId}")
+    void softDelete(String questionId);
+
 }
